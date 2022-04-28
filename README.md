@@ -5,3 +5,17 @@
 ## DOC
 
 * [STAR](./docs/STAR.md)
+
+## Dev
+
+set config:
+
+```bash
+> cp src/main/resources/application.properties.sample src/main/resources/application.properties
+```
+
+## Deploy 
+
+TODO..
+
+<!--Docker-->
