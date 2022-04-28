@@ -31,24 +31,10 @@ public class StarsController {
     }
 
     @GetMapping("/search")
-    public Result<List<Star>> search(@RequestParam(required = false) Integer groupId, @RequestParam(required = false) Integer tagId, @RequestParam(required = false) String fullName) {
-        List<Star> res = List.of();
-
-        if (groupId == null && tagId == null) {
-            res = starService.findAll();
-        }
-
-        if (fullName != null) {
-            res = starService.findByFullName(fullName);
-        }
-
-        if (groupId != null) {
-            res = starService.findByGroupId(groupId);
-        }
-
-        if (tagId != null) {
-            res = starService.findByTagId(tagId);
-        }
+    public Result<List<Star>> search(
+            @RequestParam(required = false) Integer groupId, @RequestParam(required = false) Integer tagId, @RequestParam(required = false) String fullName
+                                    ) {
+        List<Star> res = starService.search(groupId, tagId, fullName);
 
         return Result.success(res);
     }

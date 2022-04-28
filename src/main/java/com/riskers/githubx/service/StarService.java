@@ -12,11 +12,5 @@ public interface StarService {
 
     public Boolean clearAll();
 
-    public List<Star> findAll();
-
-    public List<Star> findByGroupId(Integer groupId);
-
-    public List<Star> findByTagId(Integer tagId);
-
-    public List<Star> findByFullName(String fullName);
+    public List<Star> search(Integer groupId, Integer tagId, String fullName);
 }

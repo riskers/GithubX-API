@@ -2,6 +2,7 @@ package com.riskers.githubx.entity;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
@@ -10,6 +11,7 @@ import java.util.List;
  */
 
 @Data
+@Document("stars")
 public class Star {
     @Id
     public String _id;
@@ -32,14 +34,19 @@ public class Star {
     public Integer groupId;
 
     /**
+     * repo tagsId
+     */
+    public List<Integer> tagsId;
+
+    /**
      * createTime timestamp
      */
-    public Integer createTime;
+    public Long createTime;
 
     /**
      * updateTime timestamp
      */
-    public Integer updateTime;
+    public Long updateTime;
 
     /**
      * repo group
@@ -49,5 +56,5 @@ public class Star {
     /**
      * repo tag
      */
-    public List<Tag> tag;
+    public List<Tag> tags;
 }

@@ -2,7 +2,9 @@ package com.riskers.githubx.service;
 
 import com.mongodb.bulk.BulkWriteResult;
 import com.riskers.githubx.entity.Star;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.BulkOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
@@ -13,6 +15,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 /**
@@ -37,37 +40,36 @@ public class StarServiceImpl implements StarService {
         return true;
     }
 
-    @Override
-    public List<Star> findAll() {
-        return mongoTemplate.findAll(Star.class, Const.STAR_COLLECTION_NAME);
+    public List<Star> search(Integer groupId, Integer tagId, String fullName) {
+        Criteria criteria = new Criteria();
+
+        if (!Objects.isNull(groupId)) {
+            criteria = criteria.where("groupId").is(groupId);
+        }
+
+        if (!Objects.isNull(tagId)) {
+            criteria = criteria.where("tagId").is(tagId);
+        }
+
+        if (!Strings.isEmpty(fullName)) {
+            Pattern pattern = Pattern.compile(fullName, Pattern.CASE_INSENSITIVE);
+            criteria = criteria.where("fullName").regex(pattern);
+        }
+
+        return aggregate(criteria);
     }
 
-    @Override
-    public List<Star> findByGroupId(Integer groupId) {
-        AggregationOperation match = Aggregation.match(Criteria.where("groupId").is(groupId));
+    private List<Star> aggregate(Criteria criteria) {
+        AggregationOperation match = Aggregation.match(criteria);
 
-        return getStars(match);
-    }
-
-    @Override
-    public List<Star> findByTagId(Integer tagId) {
-        AggregationOperation match = Aggregation.match(Criteria.where("tagId").is(tagId));
-
-        return getStars(match);
-    }
-
-    @Override
-    public List<Star> findByFullName(String fullName) {
-        Pattern pattern = Pattern.compile(fullName, Pattern.CASE_INSENSITIVE);
-        AggregationOperation match = Aggregation.match(Criteria.where("fullName").regex(pattern));
-
-        return getStars(match);
-    }
-
-    private List<Star> getStars(AggregationOperation match) {
         LookupOperation lookupGroupOperation = LookupOperation.newLookup().from(Const.GROUPS_COLLECTION_NAME).localField("groupId").foreignField("id").as("group");
-        LookupOperation lookupTagOperation = LookupOperation.newLookup().from(Const.TAGS_COLLECTION_NAME).localField("tagId").foreignField("id").as("tag");
-        Aggregation aggregation = Aggregation.newAggregation(match, lookupGroupOperation, lookupTagOperation);
+
+        LookupOperation lookupTagOperation = LookupOperation.newLookup().from(Const.TAGS_COLLECTION_NAME).localField("tagsId").foreignField("id").as("tags");
+
+        AggregationOperation sortOperation = Aggregation.sort(Sort.by(Sort.Direction.DESC, "updateTime"));
+
+        Aggregation aggregation = Aggregation.newAggregation(match, lookupGroupOperation, lookupTagOperation, sortOperation);
+
         AggregationResults<Star> aggregate = mongoTemplate.aggregate(aggregation, Const.STAR_COLLECTION_NAME, Star.class);
 
         return aggregate.getMappedResults();
