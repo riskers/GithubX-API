@@ -40,6 +40,26 @@ public class StarServiceImpl implements StarService {
         return true;
     }
 
+    /**
+     * db.stars.aggregate([
+     *     {
+     *         $lookup: {
+     *             from: "groups",
+     *             localField: "groupId",
+     *             foreignField: "id",
+     *             as: "group"
+     *         },
+     *     },
+     *     {
+     *         $lookup: {
+     *             from: "tags",
+     *             localField: "tagsId",
+     *             foreignField: "id",
+     *             as: "tags"
+     *         }
+     *     }
+     * ])
+     */
     public List<Star> search(Integer groupId, Integer tagId, String fullName) {
         Criteria criteria = new Criteria();
 
