@@ -18,19 +18,19 @@ public class StarsController {
     @Autowired
     private StarService starService;
 
-    @PostMapping("/clear")
+    @DeleteMapping("/")
     public Result<Boolean> clear() {
         boolean res = starService.clearAll();
         return Result.success(res);
     }
 
-    @PostMapping("/batchSave")
-    public Result<Integer> batchSave(List<Star> stars) {
+    @PostMapping("/")
+    public Result<Integer> batchSave(@RequestBody List<Star> stars) {
         Integer insertCount = starService.saveAll(stars);
         return Result.success(insertCount);
     }
 
-    @GetMapping("/search")
+    @GetMapping("/")
     public Result<List<Star>> search(
             @RequestParam(required = false) Integer groupId, @RequestParam(required = false) Integer tagId, @RequestParam(required = false) String fullName
                                     ) {

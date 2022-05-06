@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
 /**
  * @author riskers
  */
+@Service
 public class GroupServiceImpl implements GroupService {
 
     @Autowired
@@ -36,7 +38,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public Group getGroupInfo(Integer groupId) {
+    public Group getGroupInfo(Long groupId) {
         return mongoTemplate.findById(groupId, Group.class);
     }
 
@@ -49,18 +51,23 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public Group updateGroup(Integer groupId, String name) {
-        Group group = new Group();
-        group.setId(groupId);
-        group.setName(name);
+    public Group updateGroup(Long groupId, String name) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("id").is(groupId));
 
-        return mongoTemplate.save(group);
+        Group group = mongoTemplate.findOne(query, Group.class);
+        if (group != null) {
+            group.setName(name);
+            mongoTemplate.save(group);
+        }
+
+        return group;
     }
 
     @Override
-    public long delGroup(Integer groupId) {
+    public long delGroup(Long groupId) {
         Query query = new Query();
-        query.addCriteria(new Criteria("groupId").is(groupId));
+        query.addCriteria(new Criteria("id").is(groupId));
 
         return mongoTemplate.remove(query, Group.class).getDeletedCount();
     }
@@ -73,9 +80,9 @@ public class GroupServiceImpl implements GroupService {
         groupList.forEach(group -> {
             Integer groupId = group.getId();
             long starCount = getStarCount(groupId);
-            // long gistCount = getGistCount(groupId);
+            long gistCount = getGistCount(groupId);
 
-            GroupDTO groupDTO = GroupDTO.builder().id(groupId).name(group.getName()).starCount(starCount).build();
+            GroupDTO groupDTO = GroupDTO.builder().id(groupId).name(group.getName()).starCount(starCount).gistCount(gistCount).build();
 
             res.add(groupDTO);
         });

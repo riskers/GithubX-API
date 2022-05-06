@@ -1,60 +1,26 @@
 package com.riskers.githubx.entity;
 
+import com.riskers.githubx.service.Const;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.util.List;
 
 /**
  * @author riskers
  */
 
 @Data
-@Document("stars")
-public class Star {
+@EqualsAndHashCode(callSuper = true)
+@Document(Const.STAR_COLLECTION_NAME)
+public class Star extends Item {
     @Id
     public String _id;
 
-    /**
-     * repo html
-     * ps. https://githuh.com/riskers/githubx-api
-     */
-    public String htmlUrl;
 
     /**
      * repo fullName
      * ps. riskers/github-api
      */
     public String fullName;
-
-    /**
-     * repo groupId
-     */
-    public Integer groupId;
-
-    /**
-     * repo tagsId
-     */
-    public List<Integer> tagsId;
-
-    /**
-     * createTime timestamp
-     */
-    public Long createTime;
-
-    /**
-     * updateTime timestamp
-     */
-    public Long updateTime;
-
-    /**
-     * repo group
-     */
-    public List<Group> group;
-
-    /**
-     * repo tag
-     */
-    public List<Tag> tags;
 }

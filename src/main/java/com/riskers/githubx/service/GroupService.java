@@ -8,13 +8,13 @@ import java.util.List;
 public interface GroupService {
     public void resetGroup();
 
-    public Group getGroupInfo(Integer groupId);
+    public Group getGroupInfo(Long groupId);
 
     public Group addGroup(String name);
 
-    public Group updateGroup(Integer groupId, String name);
+    public Group updateGroup(Long groupId, String name);
 
-    public long delGroup(Integer groupId);
+    public long delGroup(Long groupId);
 
     public List<GroupDTO> getGroupList();
 }

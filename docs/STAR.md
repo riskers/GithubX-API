@@ -7,7 +7,7 @@
 > Search stars by params
 
 ```
-GET ${path}/search
+GET ${path}
 ```
 
 #### params
@@ -19,7 +19,7 @@ GET ${path}/search
 #### example
 
 ```
-curl http://localhost:8910/api/star/search
+curl http://localhost:8910/api/star?groupId=0&tagId=0
 ```
 
 Response:
@@ -61,7 +61,7 @@ Status: 200
 > Drop collection
 
 ```
-POST ${path}/clear
+DELETE ${path}
 ```
 
 #### params
@@ -71,7 +71,7 @@ Not Need
 #### example
 
 ```
-curl http://localhost:8910/api/star/clear
+curl http://localhost:8910/api/star/
 ```
 
 Response:
@@ -93,7 +93,7 @@ Status: 200
 > batch save
 
 ```
-POST ${path}/batchSave
+POST ${path}
 ```
 
 #### params
@@ -103,7 +103,7 @@ POST ${path}/batchSave
 #### example
 
 ```
-curl http://localhost:8910/api/star/batchSave
+curl -X POST http://localhost:8910/api/star/batchSave
 ```
 
 Response:
