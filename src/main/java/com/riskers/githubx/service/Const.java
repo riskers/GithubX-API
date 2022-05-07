@@ -14,4 +14,6 @@ public class Const {
     public static final String GROUPS_COLLECTION_NAME = "groups";
 
     public static final String TAGS_COLLECTION_NAME = "tags";
+
+    public static final String SETTINGS_COLLECTION_NAME = "settings";
 }
