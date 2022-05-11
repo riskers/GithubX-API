@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.aggregation.LookupOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,6 +27,24 @@ public class StarServiceImpl implements StarService {
 
     @Autowired
     private MongoTemplate mongoTemplate;
+
+    @Override
+    public Boolean addStar(Star star) {
+        return mongoTemplate.save(star).getId() != null;
+    }
+
+    @Override
+    public Star getStarInfo(Integer id) {
+        return mongoTemplate.findById(id, Star.class);
+    }
+
+    @Override
+    public Boolean deleteStar(Integer id) {
+        Query query = new Query();
+        query.addCriteria(new Criteria("id").is(id));
+
+        return mongoTemplate.remove(query, Star.class).getDeletedCount() > 0;
+    }
 
     @Override
     public Integer saveAll(List<Star> stars) {

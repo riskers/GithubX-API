@@ -17,6 +17,8 @@ public class Star extends Item {
     @Id
     public String _id;
 
+    public Integer id;
+
 
     /**
      * repo fullName

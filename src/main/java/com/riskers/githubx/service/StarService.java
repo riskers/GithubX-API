@@ -8,6 +8,12 @@ import java.util.List;
  * @author riskers
  */
 public interface StarService {
+    public Boolean addStar(Star star);
+
+    public Star getStarInfo(Integer id);
+
+    public Boolean deleteStar(Integer id);
+
     public Integer saveAll(List<Star> star);
 
     public Boolean clearAll();

@@ -22,9 +22,7 @@ public class SettingServiceImpl implements SettingService {
     }
 
     @Override
-    public Setting setSetting(String token) {
-        Setting setting = new Setting();
-        setting.setToken(token);
+    public Setting setSetting(Setting setting) {
         setting.setCreateTime(System.currentTimeMillis());
         setting.setUpdateTime(System.currentTimeMillis());
 

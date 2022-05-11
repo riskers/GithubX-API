@@ -8,7 +8,7 @@ import com.riskers.githubx.entity.Setting;
 public interface SettingService {
     public Setting getSetting();
 
-    public Setting setSetting(String token);
+    public Setting setSetting(Setting setting);
 
     public Boolean resetSetting();
 }
