@@ -2,11 +2,18 @@ package com.riskers.githubx.controller;
 
 import com.riskers.githubx.common.Result;
 import com.riskers.githubx.dto.TagDTO;
+import com.riskers.githubx.entity.Gist;
+import com.riskers.githubx.entity.Star;
 import com.riskers.githubx.entity.Tag;
+import com.riskers.githubx.service.GistService;
+import com.riskers.githubx.service.StarService;
 import com.riskers.githubx.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,23 +25,85 @@ public class TagController {
     @Autowired
     private TagService tagService;
 
-    @GetMapping("/")
+    @Autowired
+    private StarService starService;
+
+    @Autowired
+    private GistService gistService;
+
+    @GetMapping
     public Result<List<TagDTO>> all() {
-        List<TagDTO> tagsList = tagService.getTagsList();
+        List<TagDTO> tagsList = tagService.getTagsList(new Query());
 
         return Result.success(tagsList);
     }
 
-    @PostMapping("/")
-    public Result<Tag> addTag(@RequestBody String name) {
+    @PostMapping("/s/{sid}")
+    public Result<Tag> addTagWithSid(@RequestParam("name") String name, @PathVariable("sid") Long sid) {
         Tag tag = tagService.addTag(name);
+
+        starService.sjt(tag.id, sid);
+
         return Result.success(tag);
+    }
+
+    @PostMapping("/g/{gid}")
+    public Result<Tag> addTagWithGid(@RequestParam("name") String name, @PathVariable("gid") Long gid) {
+        Tag tag = tagService.addTag(name);
+
+        starService.gjt(tag.id, gid);
+
+        return Result.success(tag);
+    }
+
+    @GetMapping("/s/{sid}")
+    public Result<List<TagDTO>> getTagsInStar(@PathVariable("sid") Long sid) {
+        List<TagDTO> tagsList = new ArrayList<>();
+
+        Star starInfo = starService.getStarInfo(sid);
+
+        if (starInfo == null || starInfo.tagsId == null) {
+            return Result.success(tagsList);
+        }
+
+        List<String> tagsId = starInfo.tagsId;
+
+        Query query = new Query();
+        query.addCriteria(new Criteria("id").in(tagsId));
+        tagsList = tagService.getTagsList(query);
+
+        return Result.success(tagsList);
+    }
+
+    @GetMapping("/g/{gid}")
+    public Result<List<TagDTO>> getTagsInGist(@PathVariable("gid") Long gid) {
+        List<TagDTO> tagsList = new ArrayList<>();
+
+        Gist gistInfo = gistService.getGist(gid);
+
+        if (gistInfo == null || gistInfo.tagsId == null) {
+            return Result.success(tagsList);
+        }
+
+        List<String> tagsId = gistInfo.tagsId;
+
+        Query query = new Query();
+        query.addCriteria(new Criteria("id").in(tagsId));
+        tagsList = tagService.getTagsList(query);
+
+        return Result.success(tagsList);
     }
 
     @PutMapping("/{id}")
     public Result<Tag> updateTag(@PathVariable Long id, @RequestBody Tag tag) {
         Tag updatedTag = tagService.updateTag(id, tag.name);
         return Result.success(updatedTag);
+    }
+
+    @DeleteMapping
+    public Result<Boolean> clearTag() {
+        Boolean res = tagService.clear();
+        return Result.success(res);
     }
 
     @DeleteMapping("/{id}")

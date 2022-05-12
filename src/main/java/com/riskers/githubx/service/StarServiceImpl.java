@@ -1,6 +1,7 @@
 package com.riskers.githubx.service;
 
 import com.mongodb.bulk.BulkWriteResult;
+import com.riskers.githubx.entity.Gist;
 import com.riskers.githubx.entity.Star;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.aggregation.LookupOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,8 +36,8 @@ public class StarServiceImpl implements StarService {
     }
 
     @Override
-    public Star getStarInfo(Integer id) {
-        return mongoTemplate.findById(id, Star.class);
+    public Star getStarInfo(Long id) {
+        return mongoTemplate.findOne(new Query(Criteria.where("id").is(id)), Star.class);
     }
 
     @Override
@@ -57,6 +59,16 @@ public class StarServiceImpl implements StarService {
     public Boolean clearAll() {
         mongoTemplate.dropCollection(Const.STAR_COLLECTION_NAME);
         return true;
+    }
+
+    @Override
+    public void sjt(String tagId, Long sid) {
+        mongoTemplate.updateFirst(new Query(Criteria.where("id").is(sid)), new Update().push("tagsId", tagId), Star.class);
+    }
+
+    @Override
+    public void gjt(String tagId, Long gid) {
+        mongoTemplate.updateFirst(new Query(Criteria.where("id").is(gid)), new Update().push("tagsId", tagId), Gist.class);
     }
 
     /**

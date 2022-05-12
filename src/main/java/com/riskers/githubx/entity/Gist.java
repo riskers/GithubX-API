@@ -13,5 +13,7 @@ public class Gist extends Item {
     @Id
     public String _id;
 
+    private Long id;
+
     public String description;
 }

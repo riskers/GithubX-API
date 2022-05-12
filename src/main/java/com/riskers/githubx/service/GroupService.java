@@ -10,11 +10,13 @@ public interface GroupService {
 
     public Group getGroupInfo(Long groupId);
 
-    public Group addGroup(String name);
+    public Group addGroup(Group group);
 
     public Group updateGroup(Long groupId, String name);
 
     public long delGroup(Long groupId);
 
     public List<GroupDTO> getGroupList();
+
+    public Boolean clearGroup();
 }

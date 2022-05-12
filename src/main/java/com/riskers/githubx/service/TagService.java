@@ -2,6 +2,7 @@ package com.riskers.githubx.service;
 
 import com.riskers.githubx.dto.TagDTO;
 import com.riskers.githubx.entity.Tag;
+import org.springframework.data.mongodb.core.query.Query;
 
 import java.util.List;
 
@@ -17,5 +18,7 @@ public interface TagService {
 
     public Long deleteTag(long tagId);
 
-    public List<TagDTO> getTagsList();
+    public List<TagDTO> getTagsList(Query query);
+
+    public Boolean clear();
 }

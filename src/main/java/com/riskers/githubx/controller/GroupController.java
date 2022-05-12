@@ -18,8 +18,8 @@ public class GroupController {
     @Autowired
     private GroupService groupService;
 
-    @GetMapping("/")
-    public Result<List<GroupDTO>> all() {
+    @GetMapping
+    public Result<List<GroupDTO>> getGroupList() {
         List<GroupDTO> groupList = groupService.getGroupList();
 
         return Result.success(groupList);
@@ -31,10 +31,10 @@ public class GroupController {
         return Result.success(groupInfo);
     }
 
-    @PostMapping("/")
-    public Result<Group> addGroup(@RequestBody String name) {
-        Group group = groupService.addGroup(name);
-        return Result.success(group);
+    @PostMapping
+    public Result<Group> addGroup(@RequestBody Group group) {
+        Group g = groupService.addGroup(group);
+        return Result.success(g);
     }
 
     @PutMapping("/{id}")
@@ -42,6 +42,12 @@ public class GroupController {
         Group updateGroup = groupService.updateGroup(id, group.name);
 
         return Result.success(updateGroup);
+    }
+
+    @DeleteMapping
+    public Result<Boolean> clearGroup() {
+        Boolean res = groupService.clearGroup();
+        return Result.success(res);
     }
 
     @DeleteMapping("/{id}")

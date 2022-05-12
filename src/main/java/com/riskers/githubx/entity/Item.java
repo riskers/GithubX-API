@@ -17,7 +17,7 @@ public class Item {
     /**
      * tagsId
      */
-    public List<Integer> tagsId;
+    public List<String> tagsId;
 
     /**
      * createTime timestamp

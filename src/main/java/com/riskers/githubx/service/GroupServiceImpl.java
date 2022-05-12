@@ -43,10 +43,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public Group addGroup(String name) {
-        Group group = new Group();
-        group.setName(name);
-
+    public Group addGroup(Group group) {
         return mongoTemplate.save(group);
     }
 
@@ -70,6 +67,12 @@ public class GroupServiceImpl implements GroupService {
         query.addCriteria(new Criteria("id").is(groupId));
 
         return mongoTemplate.remove(query, Group.class).getDeletedCount();
+    }
+
+    @Override
+    public Boolean clearGroup() {
+        mongoTemplate.dropCollection(Const.GROUPS_COLLECTION_NAME);
+        return true;
     }
 
     @Override

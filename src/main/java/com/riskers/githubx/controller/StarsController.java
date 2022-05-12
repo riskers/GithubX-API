@@ -19,7 +19,7 @@ public class StarsController {
     private StarService starService;
 
     @DeleteMapping
-    public Result<Boolean> clear() {
+    public Result<Boolean> clearAllStar() {
         boolean res = starService.clearAll();
         return Result.success(res);
     }
@@ -30,7 +30,7 @@ public class StarsController {
         return Result.success(res);
     }
 
-    @PostMapping
+    @PostMapping("/list")
     public Result<Integer> batchSave(@RequestBody List<Star> stars) {
         Integer insertCount = starService.saveAll(stars);
         return Result.success(insertCount);
@@ -46,7 +46,7 @@ public class StarsController {
     }
 
     @GetMapping("/{id}")
-    public Result<Star> getStarInfo(@PathVariable Integer id) {
+    public Result<Star> getStarInfo(@PathVariable Long id) {
         Star res = starService.getStarInfo(id);
         return Result.success(res);
     }

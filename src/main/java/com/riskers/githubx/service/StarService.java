@@ -10,7 +10,11 @@ import java.util.List;
 public interface StarService {
     public Boolean addStar(Star star);
 
-    public Star getStarInfo(Integer id);
+    public void sjt(String tagId, Long sid);
+
+    public void gjt(String tagId, Long gid);
+
+    public Star getStarInfo(Long id);
 
     public Boolean deleteStar(Integer id);
 

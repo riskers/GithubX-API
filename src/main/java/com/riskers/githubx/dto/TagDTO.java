@@ -28,7 +28,7 @@ public class TagDTO extends Tag {
     public List<Tag> tags;
 
     @Builder
-    public TagDTO(int id, String name, Long starCount, Long gistCount) {
+    public TagDTO(String id, String name, Long starCount, Long gistCount) {
         super(id, name);
         this.starCount = starCount;
         this.gistCount = gistCount;

@@ -59,12 +59,12 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public List<TagDTO> getTagsList() {
+    public List<TagDTO> getTagsList(Query query) {
+        List<Tag> tagsList = mongoTemplate.find(query, Tag.class);
         List<TagDTO> res = new ArrayList<>();
-        List<Tag> tagsList = mongoTemplate.findAll(Tag.class);
 
         tagsList.forEach(tag -> {
-            Integer tagId = tag.getId();
+            String tagId = tag.getId();
             long starCount = getStarCount(tagId);
             long gistCount = getGistCount(tagId);
 
@@ -76,13 +76,19 @@ public class TagServiceImpl implements TagService {
         return res;
     }
 
-    private long getStarCount(int tagId) {
+    @Override
+    public Boolean clear() {
+        mongoTemplate.dropCollection(Const.TAGS_COLLECTION_NAME);
+        return true;
+    }
+
+    private long getStarCount(String tagId) {
         Query query = new Query();
         query.addCriteria(new Criteria("tagsId").in(tagId));
         return mongoTemplate.count(query, Star.class);
     }
 
-    private long getGistCount(int tagId) {
+    private long getGistCount(String tagId) {
         Query query = new Query();
         query.addCriteria(new Criteria("tagsId").in(tagId));
         return mongoTemplate.count(query, Gist.class);
