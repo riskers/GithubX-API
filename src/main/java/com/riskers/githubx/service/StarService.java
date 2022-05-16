@@ -22,5 +22,5 @@ public interface StarService {
 
     public Boolean clearAll();
 
-    public List<Star> search(Integer groupId, Integer tagId, String fullName);
+    public List<Star> search(Integer groupId, String tagId, String fullName);
 }

@@ -34,4 +34,8 @@ public class Item {
      * ps. https://githuh.com/riskers/githubx-api
      */
     public String htmlUrl;
+
+    public Group group;
+
+    public List<Tag> tags;
 }

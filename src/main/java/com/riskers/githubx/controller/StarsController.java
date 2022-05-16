@@ -38,7 +38,7 @@ public class StarsController {
 
     @GetMapping
     public Result<List<Star>> search(
-            @RequestParam(required = false) Integer groupId, @RequestParam(required = false) Integer tagId, @RequestParam(required = false) String fullName
+            @RequestParam(required = false) Integer groupId, @RequestParam(required = false) String tagId, @RequestParam(required = false) String fullName
                                     ) {
         List<Star> res = starService.search(groupId, tagId, fullName);
 

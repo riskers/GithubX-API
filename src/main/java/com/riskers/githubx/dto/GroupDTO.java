@@ -1,12 +1,9 @@
 package com.riskers.githubx.dto;
 
 import com.riskers.githubx.entity.Group;
-import com.riskers.githubx.entity.Tag;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.util.List;
 
 /**
  * @author riskers
@@ -20,12 +17,12 @@ public class GroupDTO extends Group {
     /**
      * group
      */
-    public List<Group> group;
+    // public List<Group> group;
 
     /**
      * tag
      */
-    public List<Tag> tags;
+    // public List<Tag> tags;
 
     @Builder
     public GroupDTO(int id, String name, long starCount, long gistCount) {

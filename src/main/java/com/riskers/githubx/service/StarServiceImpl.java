@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.BulkOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.aggregation.Aggregation;
-import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
-import org.springframework.data.mongodb.core.aggregation.AggregationResults;
-import org.springframework.data.mongodb.core.aggregation.LookupOperation;
+import org.springframework.data.mongodb.core.aggregation.*;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -72,26 +69,39 @@ public class StarServiceImpl implements StarService {
     }
 
     /**
-     * db.stars.aggregate([
-     *     {
-     *         $lookup: {
-     *             from: "groups",
-     *             localField: "groupId",
-     *             foreignField: "id",
-     *             as: "group"
-     *         },
-     *     },
-     *     {
-     *         $lookup: {
-     *             from: "tags",
-     *             localField: "tagsId",
-     *             foreignField: "id",
-     *             as: "tags"
-     *         }
-     *     }
+     * db.stars.getAggregate([{
+     * $lookup: {
+     * from: "groups",
+     * localField: "groupId",
+     * foreignField: "id",
+     * as: "group"
+     * },
+     * },
+     * {
+     * $lookup: {
+     * from: "tags",
+     * localField: "tagsId",
+     * foreignField: "id",
+     * as: "tags"
+     * }
+     * },
+     * {
+     * $project: {
+     * "id": 1,
+     * "fullName": 1,
+     * "groupId": 1,
+     * "createTime": 1,
+     * "updateTime": 1,
+     * "htmlUrl": 1,
+     * "tagsId": 1,
+     * "group": {
+     * $arrayElemAt: ["$group", 0]
+     * },
+     * }
+     * }
      * ])
      */
-    public List<Star> search(Integer groupId, Integer tagId, String fullName) {
+    public List<Star> search(Integer groupId, String tagId, String fullName) {
         Criteria criteria = new Criteria();
 
         if (!Objects.isNull(groupId)) {
@@ -107,10 +117,10 @@ public class StarServiceImpl implements StarService {
             criteria = criteria.where("fullName").regex(pattern);
         }
 
-        return aggregate(criteria);
+        return getAggregate(criteria);
     }
 
-    private List<Star> aggregate(Criteria criteria) {
+    private List<Star> getAggregate(Criteria criteria) {
         AggregationOperation match = Aggregation.match(criteria);
 
         LookupOperation lookupGroupOperation = LookupOperation.newLookup().from(Const.GROUPS_COLLECTION_NAME).localField("groupId").foreignField("id").as("group");
@@ -119,7 +129,10 @@ public class StarServiceImpl implements StarService {
 
         AggregationOperation sortOperation = Aggregation.sort(Sort.by(Sort.Direction.DESC, "updateTime"));
 
-        Aggregation aggregation = Aggregation.newAggregation(match, lookupGroupOperation, lookupTagOperation, sortOperation);
+        ProjectionOperation projectOperation = Aggregation.project("id", "fullName", "groupId", "createTime", "updateTime", "htmlUrl", "tagsId", "tags");
+        projectOperation = projectOperation.and("group").arrayElementAt(0).as("group");
+
+        Aggregation aggregation = Aggregation.newAggregation(match, lookupGroupOperation, lookupTagOperation, projectOperation, sortOperation);
 
         AggregationResults<Star> aggregate = mongoTemplate.aggregate(aggregation, Const.STAR_COLLECTION_NAME, Star.class);
 
