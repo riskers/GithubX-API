@@ -25,8 +25,8 @@ public class GroupDTO extends Group {
     // public List<Tag> tags;
 
     @Builder
-    public GroupDTO(int id, String name, long starCount, long gistCount) {
-        super(id, name);
+    public GroupDTO(String _id, Long id, String name, long starCount, long gistCount) {
+        super(_id, id, name);
         this.starCount = starCount;
         this.gistCount = gistCount;
     }

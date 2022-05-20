@@ -25,6 +25,13 @@ public class GroupController {
         return Result.success(groupList);
     }
 
+    @PostMapping("/reset")
+    public Result<Boolean> resetGroup() {
+        groupService.resetGroup();
+
+        return Result.success(true);
+    }
+
     @GetMapping("/{id}")
     public Result<Group> getGroupInfo(@PathVariable long id) {
         Group groupInfo = groupService.getGroupInfo(id);

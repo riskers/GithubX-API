@@ -25,7 +25,7 @@ public class GroupServiceImpl implements GroupService {
     private Group getDefaultGroup() {
         Group defaultGroup = new Group();
 
-        defaultGroup.setId(0);
+        defaultGroup.setId(0L);
         defaultGroup.setName("UNGROUP");
 
         return defaultGroup;
@@ -39,20 +39,26 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public Group getGroupInfo(Long groupId) {
-        return mongoTemplate.findById(groupId, Group.class);
+        Query query = new Query();
+        query.addCriteria(new Criteria("id").is(groupId));
+
+        return mongoTemplate.findOne(query, Group.class);
+    }
+
+    private Long getNextGroupId() {
+        return (long) (mongoTemplate.findAll(Group.class).size() + 1);
     }
 
     @Override
     public Group addGroup(Group group) {
+        group.setId(getNextGroupId());
         return mongoTemplate.save(group);
     }
 
     @Override
     public Group updateGroup(Long groupId, String name) {
-        Query query = new Query();
-        query.addCriteria(Criteria.where("id").is(groupId));
+        Group group = getGroupInfo(groupId);
 
-        Group group = mongoTemplate.findOne(query, Group.class);
         if (group != null) {
             group.setName(name);
             mongoTemplate.save(group);
@@ -81,11 +87,11 @@ public class GroupServiceImpl implements GroupService {
         List<Group> groupList = mongoTemplate.findAll(Group.class);
 
         groupList.forEach(group -> {
-            Integer groupId = group.getId();
+            Long groupId = group.getId();
             long starCount = getStarCount(groupId);
             long gistCount = getGistCount(groupId);
 
-            GroupDTO groupDTO = GroupDTO.builder().id(groupId).name(group.getName()).starCount(starCount).gistCount(gistCount).build();
+            GroupDTO groupDTO = GroupDTO.builder()._id(group.get_id()).id(groupId).name(group.getName()).starCount(starCount).gistCount(gistCount).build();
 
             res.add(groupDTO);
         });
@@ -93,13 +99,13 @@ public class GroupServiceImpl implements GroupService {
         return res;
     }
 
-    private long getStarCount(int groupId) {
+    private long getStarCount(Long groupId) {
         Query query = new Query();
         query.addCriteria(new Criteria("groupId").is(groupId));
         return mongoTemplate.count(query, Star.class);
     }
 
-    private long getGistCount(int groupId) {
+    private long getGistCount(Long groupId) {
         Query query = new Query();
         query.addCriteria(new Criteria("groupId").is(groupId));
         return mongoTemplate.count(query, Gist.class);
