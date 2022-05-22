@@ -4,12 +4,18 @@ import com.riskers.githubx.service.Const;
 import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * @author riskers
  */
 @Data
 @Document(Const.SETTINGS_COLLECTION_NAME)
-public class Setting {
+public class Setting implements Serializable {
+    @Serial
+    private static final long serialVersionUID = -7154008039825016317L;
+
     /**
      * createTime timestamp
      */

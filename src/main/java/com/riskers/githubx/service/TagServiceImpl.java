@@ -51,7 +51,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public Long deleteTag(long tagId) {
+    public Long deleteTag(String tagId) {
         Query query = new Query();
         query.addCriteria(Criteria.where("id").is(tagId));
 
@@ -68,7 +68,7 @@ public class TagServiceImpl implements TagService {
             long starCount = getStarCount(tagId);
             long gistCount = getGistCount(tagId);
 
-            TagDTO tagDTO = TagDTO.builder().id(tagId).name(tag.getName()).starCount(starCount).gistCount(gistCount).build();
+            TagDTO tagDTO = TagDTO.builder()._id(tagId).name(tag.getName()).starCount(starCount).gistCount(gistCount).build();
 
             res.add(tagDTO);
         });

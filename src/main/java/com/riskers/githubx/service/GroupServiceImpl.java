@@ -61,7 +61,7 @@ public class GroupServiceImpl implements GroupService {
 
         if (group != null) {
             group.setName(name);
-            mongoTemplate.save(group);
+            mongoTemplate.save(group, Const.GROUPS_COLLECTION_NAME);
         }
 
         return group;

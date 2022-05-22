@@ -4,21 +4,22 @@ import com.riskers.githubx.service.Const;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
-import org.springframework.data.mongodb.core.mapping.FieldType;
+
+import java.io.Serial;
+import java.io.Serializable;
 
 /**
  * @author riskers
  */
 @Data
 @Document(Const.GROUPS_COLLECTION_NAME)
-public class Group {
+public class Group implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 8881850022104082427L;
 
     @Id
-    @Field(targetType = FieldType.STRING)
     public String _id;
-
-    public String mm;
 
     public Long id;
 

@@ -4,6 +4,7 @@ import com.mongodb.bulk.BulkWriteResult;
 import com.riskers.githubx.entity.Gist;
 import com.riskers.githubx.entity.Star;
 import org.apache.logging.log4j.util.Strings;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.BulkOperations;
@@ -68,39 +69,6 @@ public class StarServiceImpl implements StarService {
         mongoTemplate.updateFirst(new Query(Criteria.where("id").is(gid)), new Update().push("tagsId", tagId), Gist.class);
     }
 
-    /**
-     * db.stars.getAggregate([{
-     * $lookup: {
-     * from: "groups",
-     * localField: "groupId",
-     * foreignField: "id",
-     * as: "group"
-     * },
-     * },
-     * {
-     * $lookup: {
-     * from: "tags",
-     * localField: "tagsId",
-     * foreignField: "id",
-     * as: "tags"
-     * }
-     * },
-     * {
-     * $project: {
-     * "id": 1,
-     * "fullName": 1,
-     * "groupId": 1,
-     * "createTime": 1,
-     * "updateTime": 1,
-     * "htmlUrl": 1,
-     * "tagsId": 1,
-     * "group": {
-     * $arrayElemAt: ["$group", 0]
-     * },
-     * }
-     * }
-     * ])
-     */
     public List<Star> search(Integer groupId, String tagId, String fullName) {
         Criteria criteria = new Criteria();
 
@@ -109,7 +77,7 @@ public class StarServiceImpl implements StarService {
         }
 
         if (!Objects.isNull(tagId)) {
-            criteria = criteria.where("tagId").is(tagId);
+            criteria = criteria.where("tagsId").is(new ObjectId(tagId));
         }
 
         if (!Strings.isEmpty(fullName)) {
@@ -125,7 +93,7 @@ public class StarServiceImpl implements StarService {
 
         LookupOperation lookupGroupOperation = LookupOperation.newLookup().from(Const.GROUPS_COLLECTION_NAME).localField("groupId").foreignField("id").as("group");
 
-        LookupOperation lookupTagOperation = LookupOperation.newLookup().from(Const.TAGS_COLLECTION_NAME).localField("tagsId").foreignField("id").as("tags");
+        AggregationOperation lookupTagOperation = LookupOperation.newLookup().from(Const.TAGS_COLLECTION_NAME).localField("tagsId").foreignField("_id").as("tags");
 
         AggregationOperation sortOperation = Aggregation.sort(Sort.by(Sort.Direction.DESC, "updateTime"));
 

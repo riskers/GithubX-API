@@ -8,6 +8,7 @@ import com.riskers.githubx.entity.Tag;
 import com.riskers.githubx.service.GistService;
 import com.riskers.githubx.service.StarService;
 import com.riskers.githubx.service.TagService;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -39,19 +40,19 @@ public class TagController {
     }
 
     @PostMapping("/s/{sid}")
-    public Result<Tag> addTagWithSid(@RequestParam("name") String name, @PathVariable("sid") Long sid) {
-        Tag tag = tagService.addTag(name);
+    public Result<Tag> addTagWithSid(@PathVariable("sid") Long sid, @RequestBody TagDTO tagDTO) {
+        Tag tag = tagService.addTag(tagDTO.getName());
 
-        starService.sjt(tag.id, sid);
+        starService.sjt(tag.getId(), sid);
 
         return Result.success(tag);
     }
 
     @PostMapping("/g/{gid}")
-    public Result<Tag> addTagWithGid(@RequestParam("name") String name, @PathVariable("gid") Long gid) {
-        Tag tag = tagService.addTag(name);
+    public Result<Tag> addTagWithGid(@PathVariable("gid") Long gid, @RequestBody TagDTO tagDTO) {
+        Tag tag = tagService.addTag(tagDTO.getName());
 
-        starService.gjt(tag.id, gid);
+        starService.gjt(tag.getId(), gid);
 
         return Result.success(tag);
     }
@@ -66,7 +67,7 @@ public class TagController {
             return Result.success(tagsList);
         }
 
-        List<String> tagsId = starInfo.tagsId;
+        List<ObjectId> tagsId = starInfo.tagsId;
 
         Query query = new Query();
         query.addCriteria(new Criteria("id").in(tagsId));
@@ -85,7 +86,7 @@ public class TagController {
             return Result.success(tagsList);
         }
 
-        List<String> tagsId = gistInfo.tagsId;
+        List<ObjectId> tagsId = gistInfo.tagsId;
 
         Query query = new Query();
         query.addCriteria(new Criteria("id").in(tagsId));
@@ -107,7 +108,7 @@ public class TagController {
     }
 
     @DeleteMapping("/{id}")
-    public Result<Long> deleteTag(@PathVariable Long id) {
+    public Result<Long> deleteTag(@PathVariable String id) {
         Long count = tagService.deleteTag(id);
         return Result.success(count);
     }

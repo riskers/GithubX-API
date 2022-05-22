@@ -16,7 +16,7 @@ public interface TagService {
 
     public Tag updateTag(long tagId, String name);
 
-    public Long deleteTag(long tagId);
+    public Long deleteTag(String tagId);
 
     public List<TagDTO> getTagsList(Query query);
 

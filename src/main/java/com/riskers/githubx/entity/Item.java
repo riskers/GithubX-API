@@ -1,6 +1,9 @@
 package com.riskers.githubx.entity;
 
 import lombok.Data;
+import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.FieldType;
 
 import java.util.List;
 
@@ -17,7 +20,8 @@ public class Item {
     /**
      * tagsId
      */
-    public List<String> tagsId;
+    @Field(targetType = FieldType.OBJECT_ID)
+    public List<ObjectId> tagsId;
 
     /**
      * createTime timestamp
