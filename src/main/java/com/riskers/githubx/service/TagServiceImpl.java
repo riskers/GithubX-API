@@ -37,7 +37,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public Tag updateTag(long tagId, String name) {
+    public Tag updateTag(String tagId, String name) {
         Query query = new Query();
         query.addCriteria(Criteria.where("id").is(tagId));
 

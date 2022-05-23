@@ -1,6 +1,7 @@
 package com.riskers.githubx.service;
 
 import com.mongodb.bulk.BulkWriteResult;
+import com.mongodb.client.result.UpdateResult;
 import com.riskers.githubx.entity.Gist;
 import com.riskers.githubx.entity.Star;
 import org.apache.logging.log4j.util.Strings;
@@ -60,13 +61,17 @@ public class StarServiceImpl implements StarService {
     }
 
     @Override
-    public void sjt(String tagId, Long sid) {
-        mongoTemplate.updateFirst(new Query(Criteria.where("id").is(sid)), new Update().push("tagsId", tagId), Star.class);
+    public long sjt(String tagId, Long sid) {
+        UpdateResult updateResult = mongoTemplate.updateFirst(new Query(Criteria.where("id").is(sid)), new Update().push("tagsId", tagId), Star.class);
+
+        return updateResult.getModifiedCount();
     }
 
     @Override
-    public void gjt(String tagId, Long gid) {
-        mongoTemplate.updateFirst(new Query(Criteria.where("id").is(gid)), new Update().push("tagsId", tagId), Gist.class);
+    public long gjt(String tagId, Long gid) {
+        UpdateResult updateResult = mongoTemplate.updateFirst(new Query(Criteria.where("id").is(gid)), new Update().push("tagsId", tagId), Gist.class);
+
+        return updateResult.getMatchedCount();
     }
 
     public List<Star> search(Integer groupId, String tagId, String fullName) {

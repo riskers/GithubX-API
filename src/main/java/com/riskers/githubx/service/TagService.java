@@ -14,7 +14,7 @@ public interface TagService {
 
     public Tag addTag(String name);
 
-    public Tag updateTag(long tagId, String name);
+    public Tag updateTag(String tagId, String name);
 
     public Long deleteTag(String tagId);
 

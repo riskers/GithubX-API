@@ -96,7 +96,7 @@ public class TagController {
     }
 
     @PutMapping("/{id}")
-    public Result<Tag> updateTag(@PathVariable Long id, @RequestBody Tag tag) {
+    public Result<Tag> updateTag(@PathVariable("id") String id, @RequestBody Tag tag) {
         Tag updatedTag = tagService.updateTag(id, tag.name);
         return Result.success(updatedTag);
     }

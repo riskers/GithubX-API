@@ -1,7 +1,6 @@
 package com.riskers.githubx.service;
 
 import com.riskers.githubx.entity.Star;
-import org.bson.types.ObjectId;
 
 import java.util.List;
 
@@ -11,9 +10,9 @@ import java.util.List;
 public interface StarService {
     public Boolean addStar(Star star);
 
-    public void sjt(String tagId, Long sid);
+    public long sjt(String tagId, Long sid);
 
-    public void gjt(String tagId, Long gid);
+    public long gjt(String tagId, Long gid);
 
     public Star getStarInfo(Long id);
 
