@@ -2,20 +2,36 @@
 
 > the API for [GithubX](http://github.com/riskers/github-plus-extension)
 
-## DOC
+## Deploy
 
-* [STAR](./docs/STAR.md)
+```bash
+> docker-compose up -d
+```
 
 ## Dev
 
-set config:
-
 ```bash
-> cp src/main/resources/application.properties.sample src/main/resources/application.properties
+> cp src/main/resources/application-dev.properties.sample src/main/resources/application-dev.properties
 ```
 
-## Deploy 
+## Publish
 
-TODO..
+### 1. package jar
 
-<!--Docker-->
+```bash
+> mvn -U clean package -P docker
+```
+
+### 2. build Docker image
+
+```bash
+> docker build -t githubx-api .
+```
+
+### 3. push Docker image
+
+```bash
+> docker tag githubx-api riskers/githubx-api
+> docker push riskers/githubx-api
+```
+
