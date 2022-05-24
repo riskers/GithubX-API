@@ -46,13 +46,13 @@ public class StarsController {
     }
 
     @GetMapping("/{id}")
-    public Result<Star> getStarInfo(@PathVariable Long id) {
+    public Result<Star> getStarInfo(@PathVariable("id") Long id) {
         Star res = starService.getStarInfo(id);
         return Result.success(res);
     }
 
     @DeleteMapping("/{id}")
-    public Result<Boolean> deleteStar(@PathVariable Integer id) {
+    public Result<Boolean> deleteStar(@PathVariable("id") Integer id) {
         boolean res = starService.deleteStar(id);
         return Result.success(res);
     }

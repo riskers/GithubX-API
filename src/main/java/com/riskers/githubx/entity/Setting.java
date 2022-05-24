@@ -1,6 +1,6 @@
 package com.riskers.githubx.entity;
 
-import com.riskers.githubx.service.Const;
+import com.riskers.githubx.common.Const;
 import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;
 

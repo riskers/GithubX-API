@@ -1,4 +1,4 @@
-package com.riskers.githubx.service;
+package com.riskers.githubx.common;
 
 import lombok.Getter;
 

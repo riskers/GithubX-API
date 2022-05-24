@@ -1,7 +1,8 @@
-package com.riskers.githubx.service;
+package com.riskers.githubx.impl;
 
 import com.mongodb.client.result.UpdateResult;
 import com.riskers.githubx.entity.Gist;
+import com.riskers.githubx.service.GjtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;

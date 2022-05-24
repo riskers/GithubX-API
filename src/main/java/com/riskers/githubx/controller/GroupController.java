@@ -33,7 +33,7 @@ public class GroupController {
     }
 
     @GetMapping("/{id}")
-    public Result<Group> getGroupInfo(@PathVariable long id) {
+    public Result<Group> getGroupInfo(@PathVariable("id") long id) {
         Group groupInfo = groupService.getGroupInfo(id);
         return Result.success(groupInfo);
     }
@@ -58,7 +58,7 @@ public class GroupController {
     }
 
     @DeleteMapping("/{id}")
-    public Result<Long> deleteGroup(@PathVariable long id) {
+    public Result<Long> deleteGroup(@PathVariable("id") long id) {
         long count = groupService.delGroup(id);
         return Result.success(count);
     }

@@ -1,6 +1,8 @@
-package com.riskers.githubx.service;
+package com.riskers.githubx.impl;
 
+import com.riskers.githubx.common.Const;
 import com.riskers.githubx.entity.Setting;
+import com.riskers.githubx.service.SettingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;

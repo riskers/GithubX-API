@@ -108,7 +108,7 @@ public class TagController {
     }
 
     @DeleteMapping("/{id}")
-    public Result<Long> deleteTag(@PathVariable String id) {
+    public Result<Long> deleteTag(@PathVariable("id") String id) {
         Long count = tagService.deleteTag(id);
         return Result.success(count);
     }
