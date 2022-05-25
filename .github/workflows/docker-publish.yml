@@ -35,10 +35,7 @@ jobs:
       - name: Build and push Docker image with
         run: |
           docker build -t ${{env.IMAGE_NAME}}:${{ steps.get_version.outputs.VERSION }} --build-arg version=${{ steps.get_version.outputs.VERSION }} ./
-          # special tag        
           docker tag ${{env.IMAGE_NAME}}:${{ steps.get_version.outputs.VERSION }} ${{ secrets.DOCKER_USERNAME }}/${{env.IMAGE_NAME}}:${{ steps.get_version.outputs.VERSION }}
           docker push ${{ secrets.DOCKER_USERNAME }}/${{env.IMAGE_NAME}}:${{ steps.get_version.outputs.VERSION }}
-          
-          # latest tag
           docker tag ${{env.IMAGE_NAME}}:latest ${{ secrets.DOCKER_USERNAME }}/${{env.IMAGE_NAME}}:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/${{env.IMAGE_NAME}}:latest
