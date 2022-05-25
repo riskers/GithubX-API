@@ -1,7 +1,3 @@
-MAINTAINER gaoyibobobo@gmail.com
-
-ARG version
-
 # package jar
 FROM maven:3.8.5-amazoncorretto-17 AS build
 COPY src /home/app/src

@@ -34,7 +34,7 @@ jobs:
 
       - name: Build and push Docker image with special tag
         run: |
-          docker build -t ${{env.IMAGE_NAME}} --build-arg version=${{ steps.get_version.outputs.VERSION }} ./
+          docker build -t ${{env.IMAGE_NAME}} ./
           docker tag ${{env.IMAGE_NAME}} ${{ secrets.DOCKER_USERNAME }}/${{env.IMAGE_NAME}}:${{ steps.get_version
           .outputs.VERSION }} 
           docker push ${{ secrets.DOCKER_USERNAME }}/${{env.IMAGE_NAME}}:${{ steps.get_version.outputs.VERSION }}
