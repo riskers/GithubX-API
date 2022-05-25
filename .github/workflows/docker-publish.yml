@@ -37,3 +37,4 @@ jobs:
           docker build -t ${{env.IMAGE_NAME}}:${{ steps.get_version.outputs.VERSION }} --build-arg version=${{ steps.get_version.outputs.VERSION }} ./
           docker tag ${{env.IMAGE_NAME}}:${{ steps.get_version.outputs.VERSION }} ${{ secrets.DOCKER_USERNAME }}/${{env.IMAGE_NAME}}:${{ steps.get_version.outputs.VERSION }}
           docker push ${{ secrets.DOCKER_USERNAME }}/${{env.IMAGE_NAME}}:${{ steps.get_version.outputs.VERSION }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/${{env.IMAGE_NAME}}:latest
