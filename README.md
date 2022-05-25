@@ -14,24 +14,21 @@
 > cp src/main/resources/application-dev.properties.sample src/main/resources/application-dev.properties
 ```
 
-## Publish
+## Publish Docker Image
 
-### 1. package jar
+The process had been integrated on [Github Actions](./.github/workflows/docker-publish.yml).
 
-```bash
-> mvn -U clean package -P docker
-```
+You can also publish the image manually:
 
-### 2. build Docker image
+1. package jar and build Docker image
 
-```bash
-> docker build -t githubx-api .
-```
+    ```bash
+    > docker build -t githubx-api .
+    ```
 
-### 3. push Docker image
+2. push Docker image
 
-```bash
-> docker tag githubx-api riskers/githubx-api
-> docker push riskers/githubx-api
-```
-
+    ```bash
+    > docker tag githubx-api riskers/githubx-api
+    > docker push riskers/githubx-api
+    ```
