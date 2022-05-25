@@ -32,9 +32,14 @@ jobs:
           echo VERSION_TAG=$(echo ${{ steps.version_step.outputs.version_tag }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
           echo LASTEST_TAG=$(echo ${{ steps.version_step.outputs.latest_tag  }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
 
-      - name: Build and push Docker image
+      - name: Build and push Docker image with
         run: |
           docker build -t ${{env.IMAGE_NAME}}:${{ steps.get_version.outputs.VERSION }} --build-arg version=${{ steps.get_version.outputs.VERSION }} ./
+          
+          # special tag        
           docker tag ${{env.IMAGE_NAME}}:${{ steps.get_version.outputs.VERSION }} ${{ secrets.DOCKER_USERNAME }}/${{env.IMAGE_NAME}}:${{ steps.get_version.outputs.VERSION }}
           docker push ${{ secrets.DOCKER_USERNAME }}/${{env.IMAGE_NAME}}:${{ steps.get_version.outputs.VERSION }}
+          
+          # latest tag
+          docker tag ${{env.IMAGE_NAME}}:latest ${{ secrets.DOCKER_USERNAME }}/${{env.IMAGE_NAME}}:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/${{env.IMAGE_NAME}}:latest
