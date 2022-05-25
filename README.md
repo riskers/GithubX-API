@@ -1,5 +1,7 @@
 # GithubX-API
 
+[![Docker](https://github.com/riskers/GithubX-API/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/riskers/GithubX-API/actions/workflows/docker-publish.yml)
+
 > the API for [GithubX](http://github.com/riskers/github-plus-extension)
 
 ## Deploy
