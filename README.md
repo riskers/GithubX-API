@@ -1,6 +1,7 @@
 # GithubX-API
 
-[![Docker](https://github.com/riskers/GithubX-API/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/riskers/GithubX-API/actions/workflows/docker-publish.yml)
+
+[![](https://img.shields.io/docker/v/riskers/githubx-api/latest?label=Docker&style=for-the-badge)](https://hub.docker.com/r/riskers/githubx-api)
 
 > the API for [GithubX](http://github.com/riskers/github-plus-extension)
 
