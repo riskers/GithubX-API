@@ -80,16 +80,16 @@ public class StarServiceImpl implements StarService {
         Criteria criteria = new Criteria();
 
         if (!Objects.isNull(groupId)) {
-            criteria = criteria.where("groupId").is(groupId);
+            criteria.and("groupId").is(groupId);
         }
 
         if (!Objects.isNull(tagId)) {
-            criteria = criteria.where("tagsId").is(new ObjectId(tagId));
+            criteria.and("tagsId").is(new ObjectId(tagId));
         }
 
         if (!Strings.isEmpty(fullName)) {
             Pattern pattern = Pattern.compile(fullName, Pattern.CASE_INSENSITIVE);
-            criteria = criteria.where("fullName").regex(pattern);
+            criteria.and("fullName").regex(pattern);
         }
 
         return getAggregate(criteria);
