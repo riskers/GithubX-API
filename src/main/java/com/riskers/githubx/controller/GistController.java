@@ -11,6 +11,7 @@ import java.util.List;
 /**
  * @author riskers
  */
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api/gist")
 public class GistController {

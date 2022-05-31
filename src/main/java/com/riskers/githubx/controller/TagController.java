@@ -20,6 +20,7 @@ import java.util.List;
 /**
  * @author riskers
  */
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping(path = "/api/tag")
 public class TagController {

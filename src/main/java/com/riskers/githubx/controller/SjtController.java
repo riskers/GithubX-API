@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
  *
  * star and tag join
  */
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping(path = "/api/sjt")
 public class SjtController {

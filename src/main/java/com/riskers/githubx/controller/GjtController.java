@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * @author riskers
  */
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api/gjt")
 public class GjtController {
